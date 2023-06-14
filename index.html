@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Cari Film</title>
+    <style>
+        body {
+            background-color: #141414;
+            color: #fff;
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+            margin: 50px;
+            padding: 0;
+        }
+
+        h1 {
+            font-size: 40px;
+            padding: 15px;
+            text-align: center;
+        }
+
+        input[type="text"] {
+            background-color: #fff;
+            border: none;
+            border-radius: 25px;
+            font-size: 16px;
+            padding: 10px 20px;
+            margin-bottom: 20px;
+            width: 90%;
+            max-width: 100%;
+        }
+
+        button {
+            background-color: #e50914;
+            border: none;
+            border-radius: 25px;
+            color: #fff;
+            cursor: pointer;
+            font-size: 16px;
+            padding: 10px 20px;
+            margin-right: 10px;
+        }
+
+        button:hover {
+            background-color: #b4060e;
+        }
+
+        #result {
+            padding: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            border-spacing: 0;
+        }
+
+        th,
+        td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #e50914;
+            color: #fff;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        tr:hover {
+            background-color: #333;
+        }
+
+        td:nth-child(1),
+        th:nth-child(1) {
+            width: 20%;
+        }
+
+        td:nth-child(2),
+        th:nth-child(2) {
+            width: 10%;
+        }
+
+        td:nth-child(3),
+        th:nth-child(3) {
+            width: 10%;
+        }
+
+        td:nth-child(4),
+        th:nth-child(4) {
+            width: 15%;
+        }
+
+        td:nth-child(5),
+        th:nth-child(5) {
+            width: 35%;
+        }
+
+        td:nth-child(6),
+        th:nth-child(6) {
+            width: 10%;
+        }
+
+        td:nth-child(7),
+        th:nth-child(7) {
+            width: 15%;
+        }
+    </style>
+    <script>
+        var movies = [
+        {
+            judul: "The Shawshank Redemption",
+            genre: "Drama",
+            tahun_rilis: 1994,
+            sutradara: "Frank Darabont",
+            sinopsis: "Dua orang narapidana membentuk ikatan selama bertahun-tahun, menemukan kedamaian dan penebusan melalui tindakan-tindakan kesopanan yang umum.",
+            rating_imdb: 9.3,
+            review: "Film yang luar biasa dengan penampilan yang luar biasa."
+        },
+        {
+            judul: "The Dark Knight",
+            genre: "Aksi, Kejahatan, Drama",
+            tahun_rilis: 2008,
+            sutradara: "Christopher Nolan",
+            sinopsis: "Ketika ancaman yang dikenal sebagai The Joker menciptakan kekacauan di Gotham, Batman harus menghadapi salah satu tes psikologis dan fisik terbesar dalam kemampuannya untuk melawan ketidakadilan.",
+            rating_imdb: 9.0,
+            review: "Sebuah film pahlawan super yang mendebarkan dengan penampilan brilian oleh Heath Ledger."
+        },
+        {
+            judul: "The Godfather",
+            genre: "Kejahatan, Drama",
+            tahun_rilis: 1972,
+            sutradara: "Francis Ford Coppola",
+            sinopsis: "Patriark yang menua dari dinasti kejahatan terorganisir mengalihkan kontrol atas kekaisaran tersembunyi ke putranya yang enggan.",
+            rating_imdb: 9.2,
+            review: "Sebuah karya masterpiece yang mendefinisikan genre kejahatan."
+        },
+        {
+            judul: "Pulp Fiction",
+            genre: "Kejahatan, Drama",
+            tahun_rilis: 1994,
+            sutradara: "Quentin Tarantino",
+            sinopsis: "Kehidupan dua pembunuh bayaran mafia, seorang petinju, seorang gangster dan istrinya, serta sepasang perampok di sebuah restoran saling terkait dalam empat cerita kekerasan dan penebusan.",
+            rating_imdb: 8.9,
+            review: "Sebuah film bergaya dan tidak konvensional dengan karakter-karakter yang tak terlupakan."
+        },
+        {
+            judul: "Fight Club",
+            genre: "Drama",
+            tahun_rilis: 1999,
+            sutradara: "David Fincher",
+            sinopsis: "Seorang pekerja kantoran yang mengalami insomnia dan pembuat sabun yang acuh tak acuh membentuk klub tempur bawah tanah yang berkembang menjadi sesuatu yang jauh lebih besar.",
+            rating_imdb: 8.8,
+            review: "Sebuah film yang mengundang pemikiran yang menantang norma-norma sosial."
+        },
+        {
+            judul: "Forrest Gump",
+            genre: "Drama, Romansa",
+            tahun_rilis: 1994,
+            sutradara: "Robert Zemeckis",
+            sinopsis: "Presidensi Kennedy dan Johnson, Perang Vietnam, skandal Watergate, dan peristiwa sejarah lainnya terungkap melalui perspektif seorang pria Alabama dengan IQ 75.",
+            rating_imdb: 8.8,
+            review: "Sebuah film yang menghangatkan hati dengan karakter yang tak terlupakan."
+        },
+        {
+            judul: "Inception",
+            genre: "Aksi, Petualangan, Sci-Fi",
+            tahun_rilis: 2010,
+            sutradara: "Christopher Nolan",
+            sinopsis: "Seorang pencuri yang mencuri rahasia perusahaan melalui teknologi berbagi mimpi diberikan tugas terbalik untuk menanamkan ide dalam pikiran seorang C.E.O.",
+            rating_imdb: 8.7,
+            review: "Sebuah film cerdas dan membingungkan dengan visual yang memukau."
+        },
+        {
+            judul: "The Matrix",
+            genre: "Aksi, Sci-Fi",
+            tahun_rilis: 1999,
+            sutradara: "Lana Wachowski, Lilly Wachowski",
+            sinopsis: "Seorang peretas komputer belajar dari pemberontak misterius tentang kebenaran sejati dari realitasnya dan perannya dalam perang melawan pengendalinya.",
+            rating_imdb: 8.7,
+            review: "Sebuah film terobosan dengan efek visual yang luar biasa."
+        },
+        {
+            judul: "Goodfellas",
+            genre: "Biografi, Kejahatan, Drama",
+            tahun_rilis: 1990,
+            sutradara: "Martin Scorsese",
+            sinopsis: "Kisah Henry Hill dan kehidupannya dalam dunia mafia, mencakup hubungannya dengan istrinya Karen Hill dan rekannya di mafia, Jimmy Conway dan Tommy DeVito.",
+            rating_imdb: 8.7,
+            review: "Sebuah film yang penuh gairah dan menarik tentang dunia mafia."
+        },
+        {
+            judul: "The Silence of the Lambs",
+            genre: "Kejahatan, Drama, Thriller",
+            tahun_rilis: 1991,
+            sutradara: "Jonathan Demme",
+            sinopsis: "Seorang calon F.B.I. harus mengandalkan seorang pembunuh yang dipenjara dan manipulatif untuk mendapatkan bantuannya dalam menangkap seorang pembunuh berantai lainnya yang mengupas kulit korbannya.",
+            rating_imdb: 8.6,
+            review: "Sebuah film yang penuh dengan ketegangan dan mencekam dengan penampilan yang tak terlupakan."
+        },
+        {
+            judul: "The Avengers",
+            genre: "Aksi, Petualangan, Sci-Fi",
+            tahun_rilis: 2012,
+            sutradara: "Joss Whedon",
+            sinopsis: "Pahlawan terkuat di Bumi harus bersatu dan belajar berjuang sebagai sebuah tim jika mereka ingin menghentikan Loki yang jahil dan pasukannya dari memperbudak umat manusia.",
+            rating_imdb: 8.0,
+            review: "Sebuah pertemuan epik pahlawan super dengan aksi yang mendebarkan."
+        },
+        {
+            judul: "The Lion King",
+            genre: "Animasi, Petualangan, Drama",
+            tahun_rilis: 1994,
+            sutradara: "Roger Allers, Rob Minkoff",
+            sinopsis: "Seekor singa muda melarikan diri dari kerajaannya setelah pembunuhan ayahnya, sambil belajar arti sebenarnya dari tanggung jawab dan keberanian.",
+            rating_imdb: 8.5,
+            review: "Sebuah film animasi klasik dengan lagu-lagu dan karakter yang tak terlupakan."
+        },
+        {
+            judul: "Interstellar",
+            genre: "Petualangan, Drama, Sci-Fi",
+            tahun_rilis: 2014,
+            sutradara: "Christopher Nolan",
+            sinopsis: "Sebuah tim penjelajah melakukan perjalanan melalui lubang cacing di ruang angkasa dalam upaya untuk memastikan kelangsungan hidup umat manusia.",
+            rating_imdb: 8.6,
+            review: "Sebuah film sci-fi yang memukau secara visual dan memprovokasi pemikiran."
+        },
+        {
+            judul: "Jurassic Park",
+            genre: "Aksi, Petualangan, Sci-Fi",
+            tahun_rilis: 1993,
+            sutradara: "Steven Spielberg",
+            sinopsis: "Selama tur pratinjau, sebuah taman hiburan mengalami pemadaman listrik besar-besaran yang memungkinkan dinosaurus hasil kloningnya berbuat ulah.",
+            rating_imdb: 8.1,
+            review: "Sebuah film yang mendebarkan dan terobosan dengan dinosaurus yang realistis."
+        },
+        {
+            judul: "Titanic",
+            genre: "Drama, Romansa",
+            tahun_rilis: 1997,
+            sutradara: "James Cameron",
+            sinopsis: "Seorang bangsawan berusia tujuh belas tahun jatuh cinta dengan seorang seniman miskin namun baik hati di atas R.M.S. Titanic yang mewah dan malang.",
+            rating_imdb: 7.8,
+            review: "Sebuah kisah romansa tragis dan epik yang terjadi di atas kapal Titanic."
+        },
+        {
+            judul: "The Pianist",
+            genre: "Biografi, Drama, Musik",
+            tahun_rilis: 2002,
+            sutradara: "Roman Polanski",
+            sinopsis: "Seorang pianis Yahudi Polandia selama Perang Dunia II harus menyembunyikan diri dari kekejaman Nazi.",
+            rating_imdb: 8.5,
+            review: "Sebuah film yang mengharukan dengan penampilan yang luar biasa."
+        },
+        {
+            judul: "Gladiator",
+            genre: "Aksi, Petualangan, Drama",
+            tahun_rilis: 2000,
+            sutradara: "Ridley Scott",
+            sinopsis: "Seorang jenderal Romawi yang terjatuh dalam pengkhianatan keluarga harus bertarung untuk memulihkan haknya dan membalas dendam di arena gladiator.",
+            rating_imdb: 8.5,
+            review: "Sebuah film epik dengan pertarungan gladiator yang spektakuler."
+        },
+        {
+            judul: "The Departed",
+            genre: "Kejahatan, Drama, Thriller",
+            tahun_rilis: 2006,
+            sutradara: "Martin Scorsese",
+            sinopsis: "Seorang perwira polisi yang berkomitmen dan seorang gangster yang merangkap sebagai informan polisi berusaha untuk mengungkap identitas satu sama lain saat keduanya merasuki organisasi lawan.",
+            rating_imdb: 8.5,
+            review: "Sebuah film kejahatan yang menegangkan dengan akting yang luar biasa."
+        },
+        {
+            judul: "Schindler's List",
+            genre: "Biografi, Drama, Sejarah",
+            tahun_rilis: 1993,
+            sutradara: "Steven Spielberg",
+            sinopsis: "Pada masa Perang Dunia II, seorang pengusaha Jerman menyelamatkan nyawa lebih dari seribu orang Yahudi dengan mempekerjakan mereka di pabriknya.",
+            rating_imdb: 8.9,
+            review: "Sebuah karya yang mengguncang dengan penggambaran yang kuat tentang Holocaust."
+        },
+        {
+            judul: "The Green Mile",
+            genre: "Drama, Fantasi, Misteri",
+            tahun_rilis: 1999,
+            sutradara: "Frank Darabont",
+            sinopsis: "Seorang sipir penjara di sebuah penjara Louisiana pada tahun 1930 menemukan bahwa narapidana yang menghukum mati memiliki kekuatan supranatural.",
+            rating_imdb: 8.6,
+            review: "Sebuah film yang penuh emosi dengan penampilan yang luar biasa."
+        },
+        {
+            judul: "Saving Private Ryan",
+            genre: "Aksi, Drama, Sejarah",
+            tahun_rilis: 1998,
+            sutradara: "Steven Spielberg",
+            sinopsis: "Selama Invasi Normandia pada Perang Dunia II, sekelompok tentara Amerika mencari seorang prajurit yang menjadi satu-satunya yang tersisa dari empat bersaudara.",
+            rating_imdb: 8.6,
+            review: "Sebuah film perang yang mendebarkan dengan adegan aksi yang mengesankan."
+        },
+        {
+            judul: "The Prestige",
+            genre: "Drama, Misteri, Sci-Fi",
+            tahun_rilis: 2006,
+            sutradara: "Christopher Nolan",
+            sinopsis: "Dua pesulap bersaing secara pribadi dan profesional dalam upaya untuk menciptakan trik ajaib terhebat.",
+            rating_imdb: 8.5,
+            review: "Sebuah film misteri yang cerdas dengan plot yang membingungkan."
+        }
+        ];
+ 
+
+        // Fungsi untuk mencari film berdasarkan kata kunci
+        function cariFilm() {
+            var keyword = document.getElementById("keyword").value.toLowerCase();
+
+            var result = document.getElementById("result");
+            result.innerHTML = ""; // Reset hasil pencarian sebelumnya
+
+            var filteredMovies = movies.filter(function (movie) {
+                return (
+                    movie.judul.toLowerCase().includes(keyword) ||
+                    movie.genre.toLowerCase().includes(keyword) ||
+                    movie.tahun_rilis.toString().includes(keyword) ||
+                    movie.sutradara.toLowerCase().includes(keyword) ||
+                    movie.sinopsis.toLowerCase().includes(keyword) ||
+                    movie.rating_imdb.toString().includes(keyword) ||
+                    movie.review.toLowerCase().includes(keyword)
+                );
+            });
+
+            if (filteredMovies.length > 0) {
+                result.innerHTML = `
+                    <table>
+                        <tr>
+                            <th>Judul</th>
+                            <th>Genre</th>
+                            <th>Tahun Rilis</th>
+                            <th>Sutradara</th>
+                            <th>Sinopsis</th>
+                            <th>Rating IMDb</th>
+                            <th>Review</th>
+                        </tr>
+                        ${filteredMovies
+                            .map(function (movie) {
+                                return `
+                                    <tr>
+                                        <td>${movie.judul}</td>
+                                        <td>${movie.genre}</td>
+                                        <td>${movie.tahun_rilis}</td>
+                                        <td>${movie.sutradara}</td>
+                                        <td>${movie.sinopsis}</td>
+                                        <td>${movie.rating_imdb}</td>
+                                        <td>${movie.review}</td>
+                                    </tr>
+                                `;
+                            })
+                            .join("")}
+                    </table>
+                `;
+            } else {
+                result.innerHTML = "Tidak ada film yang sesuai.";
+            }
+        }
+
+        // Fungsi untuk menampilkan semua film
+        function tampilkanSemuaFilm() {
+            var result = document.getElementById("result");
+            result.innerHTML = ""; // Reset hasil pencarian sebelumnya
+
+            if (movies.length > 0) {
+                result.innerHTML = `
+                    <table>
+                        <tr>
+                            <th>Judul</th>
+                            <th>Genre</th>
+                            <th>Tahun Rilis</th>
+                            <th>Sutradara</th>
+                            <th>Sinopsis</th>
+                            <th>Rating IMDb</th>
+                            <th>Review</th>
+                        </tr>
+                        ${movies
+                            .map(function (movie) {
+                                return `
+                                    <tr>
+                                        <td>${movie.judul}</td>
+                                        <td>${movie.genre}</td>
+                                        <td>${movie.tahun_rilis}</td>
+                                        <td>${movie.sutradara}</td>
+                                        <td>${movie.sinopsis}</td>
+                                        <td>${movie.rating_imdb}</td>
+                                        <td>${movie.review}</td>
+                                    </tr>
+                                `;
+                            })
+                            .join("")}
+                    </table>
+                `;
+            } else {
+                result.innerHTML = "Tidak ada film yang tersedia.";
+            }
+        }
+
+        // Fungsi untuk menambahkan film baru
+        function tambahFilm() {
+            var judul = prompt("Masukkan judul film:");
+            var genre = prompt("Masukkan genre film:");
+            var tahun_rilis = prompt("Masukkan tahun rilis film:");
+            var sutradara = prompt("Masukkan sutradara film:");
+            var sinopsis = prompt("Masukkan sinopsis film:");
+            var rating_imdb = prompt("Masukkan rating IMDb film:");
+            var review = prompt("Masukkan review film:");
+
+            var movie = {
+                judul: judul,
+                genre: genre,
+                tahun_rilis: tahun_rilis,
+                sutradara: sutradara,
+                sinopsis: sinopsis,
+                rating_imdb: rating_imdb,
+                review: review
+            };
+
+            movies.push(movie);
+        }
+    </script>
+</head>
+
+<body>
+    <h1>Cari Film</h1>
+
+    <input type="text" id="keyword" placeholder="Masukkan kata kunci">
+    <button onclick="cariFilm()">Cari</button>
+    <button onclick="tampilkanSemuaFilm()">List Film</button>
+    <button onclick="tambahFilm()">Tambah Film</button>
+
+    <div id="result"></div>
+</body>
+</html>
