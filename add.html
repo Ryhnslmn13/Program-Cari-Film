@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Request Film</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Request Film</h1>
+    
+    <form id="addFilmForm" onsubmit="sendRecommendation(event)">
+      <label for="title">Title:</label>
+      <input type="text" id="title" required><br>
+
+      <label for="director">Director:</label>
+      <input type="text" id="director" required><br>
+
+      <label for="year">Year:</label>
+      <input type="number" id="year" required><br>
+
+      <input type="submit" value="Send Recommendation">
+    </form>
+    
+    <a href="index.html">Back to Main Page</a>
+  </div>
+
+  <script>
+    function sendRecommendation(event) {
+      event.preventDefault();
+
+      var title = document.getElementById("title").value;
+      var director = document.getElementById("director").value;
+      var year = document.getElementById("year").value;
+
+      var recommendationData = {
+        title: title,
+        director: director,
+        year: year
+      };
+
+      // Kirim rekomendasi film ke alamat email pemilik website
+      var ownerEmail = "reyhansalman4869@gmail.com";
+      var emailSubject = "Rekomendasi Film Baru";
+      var emailBody = JSON.stringify(recommendationData);
+      var mailtoLink = "mailto:" + ownerEmail + "?subject=" + encodeURIComponent(emailSubject) + "&body=" + encodeURIComponent(emailBody);
+
+      // Buka aplikasi email default dengan komposisi pesan yang telah diatur
+      window.location.href = mailtoLink;
+    }
+  </script>
+</body>
+</html>
